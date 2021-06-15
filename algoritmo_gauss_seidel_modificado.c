@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+
 int main()
 {
     int nMax;
@@ -65,12 +67,16 @@ int main()
     printf("MATRIZ AUMENTADA: \n");
     for (int linha = 0; linha < dimensao; linha++)
     {
-        printf("|  ");
+        printf("| ");
         for (int coluna = 0; coluna < dimensao; coluna++)
         {
-            printf("%lf ", matriz_a[linha][coluna]);
+            if (matriz_a[linha][coluna] >= 0) //Formatacao da array
+            {
+                printf(" ");
+            }
+            printf("%.0lf ", matriz_a[linha][coluna]);
         }
-        printf("| %lf  | \n", matriz_b[linha]);
+        printf("| %.0lf  | \n", matriz_b[linha]);
     }
     printf("ITERAÇÃO 0: \n");
     for (int linha = 0; linha < dimensao; linha++)
@@ -86,23 +92,23 @@ int main()
         {
             erro_absoluto[linha] = matriz_x[linha];
             matriz_x[linha] = matriz_b[linha];
-            for (int coluna = 0; coluna < dimensao; coluna++)
+            for (int coluna = linha - 1; coluna <= linha + 1; coluna++)
             {
-                if (linha != coluna && coluna == linha)
+                if (coluna == linha || coluna < 0)
                 {
-                    matriz_x[linha] = matriz_x[linha] - (matriz_a[linha][coluna] * matriz_x[coluna]);
+                    continue;
                 }
+                matriz_x[linha] = matriz_x[linha] - (matriz_a[linha][coluna] * matriz_x[coluna]);
             }
             matriz_x[linha] = matriz_x[linha] / matriz_a[linha][linha];
             printf("x%d = %lf \n", linha + 1, matriz_x[linha]);
-
-            // Calculo do erro absoluto
+            // Calculo do erro absoluto: Valor absoluto da subtraçao entre o x linha anterior (armazenado anteriormente) e o x linha encontrado no passo atual, dividido por x linha encontrado no passo atual
             erro_absoluto[linha] = (erro_absoluto[linha] - matriz_x[linha]) / matriz_x[linha];
-            // Modulo
             if (erro_absoluto[linha] < 0)
             {
-                erro_absoluto[linha] = erro_absoluto[linha] * -1;
+                erro_absoluto[linha] *= -1;
             }
+            printf("Erro absoluto x%d: %lf \n", linha + 1, erro_absoluto[linha]);
             if (erro_absoluto[linha] > precisao)
             {
                 atendeuPrecisao = false;

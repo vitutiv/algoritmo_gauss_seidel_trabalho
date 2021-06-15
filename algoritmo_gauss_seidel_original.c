@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
 int main()
 {
     int nMax;
@@ -113,12 +114,11 @@ int main()
             matriz_x[linha] = matriz_x[linha] / matriz_a[linha][linha];
             printf("x%d = %lf \n", linha + 1, matriz_x[linha]);
 
-            // Calculo do erro absoluto
+            // Calculo do erro absoluto: Valor absoluto da subtraçao entre o x linha anterior (armazenado anteriormente) e o x linha encontrado no passo atual, dividido por x linha encontrado no passo atual
             erro_absoluto[linha] = (erro_absoluto[linha] - matriz_x[linha]) / matriz_x[linha];
-            // Modulo
             if (erro_absoluto[linha] < 0)
             {
-                erro_absoluto[linha] = erro_absoluto[linha] * -1;
+                erro_absoluto[linha] *= -1;
             }
             if (erro_absoluto[linha] > precisao)
             {
