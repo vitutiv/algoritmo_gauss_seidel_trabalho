@@ -4,17 +4,43 @@
 
 int main()
 {
-    int nMax;
-    do
+    char usarPadrao;
+    int nMax = 10; // Criterio de parada: Numero maximo de interacoes
+    printf("Usar nMax padrao (%d)? (s/n): ", nMax);
+    scanf(" %c", &usarPadrao);
+
+    if (usarPadrao == 'n')
     {
-        printf("Por favor digite o numero maximo de iteracoes: ");
-        scanf("%d", &nMax);
-        if (nMax <= 0)
+        do
         {
-            printf("nMax invalido. Digite um numero maior ou igual a 1.");
-        }
-    } while (nMax <= 0);
-    int dimensao;
+            printf("Por favor digite o numero maximo de iteracoes: ");
+            scanf("%d", &nMax);
+            if (nMax <= 0)
+            {
+                printf("nMax invalido. Digite um numero maior ou igual a 1.");
+            }
+        } while (nMax <= 0);
+    }
+
+    double precisao = 0.001; //Criterio de parada: Erro relativo maximo
+    printf("Usar precisao padrao (%lf)? (s/n): ", precisao);
+    scanf(" %c", &usarPadrao);
+
+    if (usarPadrao == 'n')
+    {
+        do
+        {
+            printf("Por favor digite a precisao relativa desejada: ");
+            scanf("%lf", &precisao);
+            if (precisao < 0)
+            {
+                printf("Precisao invalida, por favor digite um numero nao-negativo.");
+            }
+        } while (precisao < 0);
+    }
+
+    int dimensao; // Dimensao da matriz (n x n)
+    // Perguntar a dimensao da matriz para o usuario
     do
     {
         printf("Por favor digite a dimensao da matriz aumentada: ");
@@ -24,16 +50,7 @@ int main()
             printf("Dimensao invalida. Digite um numero maior ou igual a 1.");
         }
     } while (dimensao <= 0);
-    double precisao;
-    do
-    {
-        printf("Por favor digite a precisao relativa desejada: ");
-        scanf("%lf", &precisao);
-        if (precisao < 0)
-        {
-            printf("Precisao invalida, por favor digite um numero nao-negativo.");
-        }
-    } while (precisao < 0);
+
     double matriz_a[dimensao][dimensao], matriz_b[dimensao], matriz_x[dimensao], erro_absoluto[dimensao];
     printf("PREENCHER CHUTE INICIAL: \n");
     for (int linha = 0; linha < dimensao; linha++)
@@ -46,7 +63,7 @@ int main()
     {
         for (int coluna = 0; coluna < dimensao; coluna++)
         {
-            if (coluna >= linha - 1 && coluna < linha + 2)
+            if (coluna >= linha - 1 && coluna <= linha + 1)
             {
                 if ((coluna - linha) % 2 == 0)
                 {
