@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdbool.h>
+#include <unistd.h>
 int main()
 {
     /*
@@ -7,9 +8,9 @@ int main()
         precisao: Criterio de parada - erro relativo do metodo de gauss-seidel
         dimensao: dimensao da matriz_a nxn e quantidade de incognitas das equacoes lineares
     */
-    int nMax = 1000;
-    double precisao = 0.000001;
-    int dimensao = 30;
+    int nMax = 5000;
+    double precisao = 0.00000;
+    int dimensao = 50;
     /*  
         matriz_a = armazenam os valores de a[linha, coluna] (NAO USADO DIRETAMENTE NO CODIGO, POIS matriz_a[linha][linha-1] e matriz_a[linha][linha+1] sempre = 1, matriz_a[diagonal_principal] sempre = -2, e demais valores sempre = 0).; 
         vetor_b: armazena os valores de b[linha] (NAO USADO DIRETAMENTE NO CODIGO, POIS iniciando de b[1] ate b[n-2] sempre = 0 e b[0], b[n] = 1) 
@@ -56,6 +57,7 @@ int main()
     // Iteracoes do metodo gauss-seidel MODIFICADO
     for (int iteracao = 1; iteracao <= nMax; iteracao++)
     {
+        printf("ITERAÇÃO %d \n", iteracao);
         bool atendeuPrecisao = true;
         for (int linha = 0; linha < dimensao; linha++)
         {
@@ -73,6 +75,8 @@ int main()
             }
             vetor_x[linha] /= -2; // Dividir pelo valor na diagonal principal (na diagonal principal de matriz_a, o valor sempre é -2);
             // Calculo do erro absoluto: Valor absoluto da subtraçao entre o x linha anterior (armazenado anteriormente) e o x linha encontrado no passo atual, dividido por x linha encontrado no passo atual
+            printf("x%d: %f \n", linha, vetor_x[linha]);
+            sleep(1 / 5);
             erro_relativo[linha] = (erro_relativo[linha] - vetor_x[linha]) / vetor_x[linha];
             if (erro_relativo[linha] < 0)
                 erro_relativo[linha] *= -1;
